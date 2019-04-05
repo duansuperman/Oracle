@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CLASS_TB">
+          <Key>
+            <PropertyRef Name="CLASS_ID" />
+          </Key>
+          <Property Name="CLASS_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="CLASSNAME" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="DEPARTMENT" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DEPARTMENT_TB">
+          <Key>
+            <PropertyRef Name="DEPART_ID" />
+          </Key>
+          <Property Name="DEPART_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DEPARTNAME" Type="varchar2" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DEVVN_QUANHUYEN">
+          <Key>
+            <PropertyRef Name="MAQH" />
+          </Key>
+          <Property Name="MAQH" Type="varchar2" MaxLength="5" Nullable="false" />
+          <Property Name="NAME" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="TYPE" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MATP" Type="varchar2" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DEVVN_TINHTHANHPHO">
+          <Key>
+            <PropertyRef Name="MATP" />
+          </Key>
+          <Property Name="MATP" Type="varchar2" MaxLength="5" Nullable="false" />
+          <Property Name="NAME" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="TYPE" Type="varchar2" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DEVVN_XAPHUONGTHITRAN">
+          <Key>
+            <PropertyRef Name="XAID" />
+          </Key>
+          <Property Name="XAID" Type="varchar2" MaxLength="5" Nullable="false" />
+          <Property Name="NAME" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="TYPE" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MAQH" Type="varchar2" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ROOM_TB">
+          <Key>
+            <PropertyRef Name="ROOMID" />
+          </Key>
+          <Property Name="ROOMID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ROOMNAME" Type="varchar2" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="STATISTIC_TB">
+          <Key>
+            <PropertyRef Name="STA_ID" />
+          </Key>
+          <Property Name="STA_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="MONTH" Type="date" Nullable="false" />
+          <Property Name="STUDENT" Type="varchar2" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="STUDENT_TB">
+          <Key>
+            <PropertyRef Name="STUDENT_ID" />
+          </Key>
+          <Property Name="STUDENT_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="STUDENTNAME" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="CLASS" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ROOM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="STATUS" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATEIN" Type="date" />
+          <Property Name="DATEOUT" Type="date" />
+          <Property Name="PLACE" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="PRIORITY" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CLASS_DEPARTMENT">
+          <End Role="DEPARTMENT_TB" Type="Self.DEPARTMENT_TB" Multiplicity="1" />
+          <End Role="CLASS_TB" Type="Self.CLASS_TB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTMENT_TB">
+              <PropertyRef Name="DEPART_ID" />
+            </Principal>
+            <Dependent Role="CLASS_TB">
+              <PropertyRef Name="DEPARTMENT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_STATISTIC_STUDENT">
+          <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="1" />
+          <End Role="STATISTIC_TB" Type="Self.STATISTIC_TB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENT_TB">
+              <PropertyRef Name="STUDENT_ID" />
+            </Principal>
+            <Dependent Role="STATISTIC_TB">
+              <PropertyRef Name="STUDENT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_STUDENT_CLASS">
+          <End Role="CLASS_TB" Type="Self.CLASS_TB" Multiplicity="1" />
+          <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLASS_TB">
+              <PropertyRef Name="CLASS_ID" />
+            </Principal>
+            <Dependent Role="STUDENT_TB">
+              <PropertyRef Name="CLASS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_STUDENT_ROOM">
+          <End Role="ROOM_TB" Type="Self.ROOM_TB" Multiplicity="1" />
+          <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROOM_TB">
+              <PropertyRef Name="ROOMID" />
+            </Principal>
+            <Dependent Role="STUDENT_TB">
+              <PropertyRef Name="ROOM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="CLASS_TB" EntityType="Self.CLASS_TB" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+          <EntitySet Name="DEPARTMENT_TB" EntityType="Self.DEPARTMENT_TB" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+          <EntitySet Name="DEVVN_QUANHUYEN" EntityType="Self.DEVVN_QUANHUYEN" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+          <EntitySet Name="DEVVN_TINHTHANHPHO" EntityType="Self.DEVVN_TINHTHANHPHO" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+          <EntitySet Name="DEVVN_XAPHUONGTHITRAN" EntityType="Self.DEVVN_XAPHUONGTHITRAN" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+          <EntitySet Name="ROOM_TB" EntityType="Self.ROOM_TB" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+          <EntitySet Name="STATISTIC_TB" EntityType="Self.STATISTIC_TB" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+          <EntitySet Name="STUDENT_TB" EntityType="Self.STUDENT_TB" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+          <AssociationSet Name="FK_CLASS_DEPARTMENT" Association="Self.FK_CLASS_DEPARTMENT">
+            <End Role="DEPARTMENT_TB" EntitySet="DEPARTMENT_TB" />
+            <End Role="CLASS_TB" EntitySet="CLASS_TB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_STATISTIC_STUDENT" Association="Self.FK_STATISTIC_STUDENT">
+            <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+            <End Role="STATISTIC_TB" EntitySet="STATISTIC_TB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_STUDENT_CLASS" Association="Self.FK_STUDENT_CLASS">
+            <End Role="CLASS_TB" EntitySet="CLASS_TB" />
+            <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_STUDENT_ROOM" Association="Self.FK_STUDENT_ROOM">
+            <End Role="ROOM_TB" EntitySet="ROOM_TB" />
+            <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CLASS_TB">
+          <Key>
+            <PropertyRef Name="CLASS_ID" />
+          </Key>
+          <Property Name="CLASS_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="CLASSNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DEPARTMENT" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <NavigationProperty Name="DEPARTMENT_TB" Relationship="Self.FK_CLASS_DEPARTMENT" FromRole="CLASS_TB" ToRole="DEPARTMENT_TB" />
+          <NavigationProperty Name="STUDENT_TB" Relationship="Self.FK_STUDENT_CLASS" FromRole="CLASS_TB" ToRole="STUDENT_TB" />
+        </EntityType>
+        <EntityType Name="DEPARTMENT_TB">
+          <Key>
+            <PropertyRef Name="DEPART_ID" />
+          </Key>
+          <Property Name="DEPART_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DEPARTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="CLASS_TB" Relationship="Self.FK_CLASS_DEPARTMENT" FromRole="DEPARTMENT_TB" ToRole="CLASS_TB" />
+        </EntityType>
+        <EntityType Name="DEVVN_QUANHUYEN">
+          <Key>
+            <PropertyRef Name="MAQH" />
+          </Key>
+          <Property Name="MAQH" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TYPE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MATP" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DEVVN_TINHTHANHPHO">
+          <Key>
+            <PropertyRef Name="MATP" />
+          </Key>
+          <Property Name="MATP" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TYPE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DEVVN_XAPHUONGTHITRAN">
+          <Key>
+            <PropertyRef Name="XAID" />
+          </Key>
+          <Property Name="XAID" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TYPE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MAQH" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ROOM_TB">
+          <Key>
+            <PropertyRef Name="ROOMID" />
+          </Key>
+          <Property Name="ROOMID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ROOMNAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="STUDENT_TB" Relationship="Self.FK_STUDENT_ROOM" FromRole="ROOM_TB" ToRole="STUDENT_TB" />
+        </EntityType>
+        <EntityType Name="STATISTIC_TB">
+          <Key>
+            <PropertyRef Name="STA_ID" />
+          </Key>
+          <Property Name="STA_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="MONTH" Type="DateTime" Nullable="false" />
+          <Property Name="STUDENT" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="STUDENT_TB" Relationship="Self.FK_STATISTIC_STUDENT" FromRole="STATISTIC_TB" ToRole="STUDENT_TB" />
+        </EntityType>
+        <EntityType Name="STUDENT_TB">
+          <Key>
+            <PropertyRef Name="STUDENT_ID" />
+          </Key>
+          <Property Name="STUDENT_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="STUDENTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CLASS" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ROOM" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="STATUS" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATEIN" Type="DateTime" />
+          <Property Name="DATEOUT" Type="DateTime" />
+          <Property Name="PLACE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PRIORITY" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <NavigationProperty Name="CLASS_TB" Relationship="Self.FK_STUDENT_CLASS" FromRole="STUDENT_TB" ToRole="CLASS_TB" />
+          <NavigationProperty Name="ROOM_TB" Relationship="Self.FK_STUDENT_ROOM" FromRole="STUDENT_TB" ToRole="ROOM_TB" />
+          <NavigationProperty Name="STATISTIC_TB" Relationship="Self.FK_STATISTIC_STUDENT" FromRole="STUDENT_TB" ToRole="STATISTIC_TB" />
+        </EntityType>
+        <Association Name="FK_CLASS_DEPARTMENT">
+          <End Role="DEPARTMENT_TB" Type="Self.DEPARTMENT_TB" Multiplicity="1" />
+          <End Role="CLASS_TB" Type="Self.CLASS_TB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTMENT_TB">
+              <PropertyRef Name="DEPART_ID" />
+            </Principal>
+            <Dependent Role="CLASS_TB">
+              <PropertyRef Name="DEPARTMENT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_STUDENT_CLASS">
+          <End Role="CLASS_TB" Type="Self.CLASS_TB" Multiplicity="1" />
+          <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLASS_TB">
+              <PropertyRef Name="CLASS_ID" />
+            </Principal>
+            <Dependent Role="STUDENT_TB">
+              <PropertyRef Name="CLASS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_STUDENT_ROOM">
+          <End Role="ROOM_TB" Type="Self.ROOM_TB" Multiplicity="1" />
+          <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROOM_TB">
+              <PropertyRef Name="ROOMID" />
+            </Principal>
+            <Dependent Role="STUDENT_TB">
+              <PropertyRef Name="ROOM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_STATISTIC_STUDENT">
+          <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="1" />
+          <End Role="STATISTIC_TB" Type="Self.STATISTIC_TB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDENT_TB">
+              <PropertyRef Name="STUDENT_ID" />
+            </Principal>
+            <Dependent Role="STATISTIC_TB">
+              <PropertyRef Name="STUDENT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ManagerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CLASS_TB" EntityType="Self.CLASS_TB" />
+          <EntitySet Name="DEPARTMENT_TB" EntityType="Self.DEPARTMENT_TB" />
+          <EntitySet Name="DEVVN_QUANHUYEN" EntityType="Self.DEVVN_QUANHUYEN" />
+          <EntitySet Name="DEVVN_TINHTHANHPHO" EntityType="Self.DEVVN_TINHTHANHPHO" />
+          <EntitySet Name="DEVVN_XAPHUONGTHITRAN" EntityType="Self.DEVVN_XAPHUONGTHITRAN" />
+          <EntitySet Name="ROOM_TB" EntityType="Self.ROOM_TB" />
+          <EntitySet Name="STATISTIC_TB" EntityType="Self.STATISTIC_TB" />
+          <EntitySet Name="STUDENT_TB" EntityType="Self.STUDENT_TB" />
+          <AssociationSet Name="FK_CLASS_DEPARTMENT" Association="Self.FK_CLASS_DEPARTMENT">
+            <End Role="DEPARTMENT_TB" EntitySet="DEPARTMENT_TB" />
+            <End Role="CLASS_TB" EntitySet="CLASS_TB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_STUDENT_CLASS" Association="Self.FK_STUDENT_CLASS">
+            <End Role="CLASS_TB" EntitySet="CLASS_TB" />
+            <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_STUDENT_ROOM" Association="Self.FK_STUDENT_ROOM">
+            <End Role="ROOM_TB" EntitySet="ROOM_TB" />
+            <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+          </AssociationSet>
+          <AssociationSet Name="FK_STATISTIC_STUDENT" Association="Self.FK_STATISTIC_STUDENT">
+            <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+            <End Role="STATISTIC_TB" EntitySet="STATISTIC_TB" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="ManagerEntities">
+          <EntitySetMapping Name="CLASS_TB">
+            <EntityTypeMapping TypeName="Model.CLASS_TB">
+              <MappingFragment StoreEntitySet="CLASS_TB">
+                <ScalarProperty Name="CLASS_ID" ColumnName="CLASS_ID" />
+                <ScalarProperty Name="CLASSNAME" ColumnName="CLASSNAME" />
+                <ScalarProperty Name="DEPARTMENT" ColumnName="DEPARTMENT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DEPARTMENT_TB">
+            <EntityTypeMapping TypeName="Model.DEPARTMENT_TB">
+              <MappingFragment StoreEntitySet="DEPARTMENT_TB">
+                <ScalarProperty Name="DEPART_ID" ColumnName="DEPART_ID" />
+                <ScalarProperty Name="DEPARTNAME" ColumnName="DEPARTNAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DEVVN_QUANHUYEN">
+            <EntityTypeMapping TypeName="Model.DEVVN_QUANHUYEN">
+              <MappingFragment StoreEntitySet="DEVVN_QUANHUYEN">
+                <ScalarProperty Name="MAQH" ColumnName="MAQH" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="MATP" ColumnName="MATP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DEVVN_TINHTHANHPHO">
+            <EntityTypeMapping TypeName="Model.DEVVN_TINHTHANHPHO">
+              <MappingFragment StoreEntitySet="DEVVN_TINHTHANHPHO">
+                <ScalarProperty Name="MATP" ColumnName="MATP" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DEVVN_XAPHUONGTHITRAN">
+            <EntityTypeMapping TypeName="Model.DEVVN_XAPHUONGTHITRAN">
+              <MappingFragment StoreEntitySet="DEVVN_XAPHUONGTHITRAN">
+                <ScalarProperty Name="XAID" ColumnName="XAID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="MAQH" ColumnName="MAQH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROOM_TB">
+            <EntityTypeMapping TypeName="Model.ROOM_TB">
+              <MappingFragment StoreEntitySet="ROOM_TB">
+                <ScalarProperty Name="ROOMID" ColumnName="ROOMID" />
+                <ScalarProperty Name="ROOMNAME" ColumnName="ROOMNAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STATISTIC_TB">
+            <EntityTypeMapping TypeName="Model.STATISTIC_TB">
+              <MappingFragment StoreEntitySet="STATISTIC_TB">
+                <ScalarProperty Name="STA_ID" ColumnName="STA_ID" />
+                <ScalarProperty Name="MONTH" ColumnName="MONTH" />
+                <ScalarProperty Name="STUDENT" ColumnName="STUDENT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STUDENT_TB">
+            <EntityTypeMapping TypeName="Model.STUDENT_TB">
+              <MappingFragment StoreEntitySet="STUDENT_TB">
+                <ScalarProperty Name="STUDENT_ID" ColumnName="STUDENT_ID" />
+                <ScalarProperty Name="STUDENTNAME" ColumnName="STUDENTNAME" />
+                <ScalarProperty Name="CLASS" ColumnName="CLASS" />
+                <ScalarProperty Name="ROOM" ColumnName="ROOM" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="DATEIN" ColumnName="DATEIN" />
+                <ScalarProperty Name="DATEOUT" ColumnName="DATEOUT" />
+                <ScalarProperty Name="PLACE" ColumnName="PLACE" />
+                <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

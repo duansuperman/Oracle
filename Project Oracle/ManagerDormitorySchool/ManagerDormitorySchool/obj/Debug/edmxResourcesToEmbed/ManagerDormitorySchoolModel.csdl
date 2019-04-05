@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="CLASS_TB">
+    <Key>
+      <PropertyRef Name="CLASS_ID" />
+    </Key>
+    <Property Name="CLASS_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="CLASSNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DEPARTMENT" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <NavigationProperty Name="STUDENT_TB" Relationship="Self.CLASS_FK" FromRole="CLASS_TB" ToRole="STUDENT_TB" />
+    <NavigationProperty Name="DEPARTMENT_TB" Relationship="Self.DEPARTMENT_FK" FromRole="CLASS_TB" ToRole="DEPARTMENT_TB" />
+  </EntityType>
+  <EntityType Name="DEPARTMENT_TB">
+    <Key>
+      <PropertyRef Name="DEPART_ID" />
+    </Key>
+    <Property Name="DEPART_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="DEPARTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="CLASS_TB" Relationship="Self.DEPARTMENT_FK" FromRole="DEPARTMENT_TB" ToRole="CLASS_TB" />
+  </EntityType>
+  <EntityType Name="ROOM_TB">
+    <Key>
+      <PropertyRef Name="ROOMID" />
+    </Key>
+    <Property Name="ROOMID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="ROOMNAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="STUDENT_TB" Relationship="Self.ROOM_FK" FromRole="ROOM_TB" ToRole="STUDENT_TB" />
+  </EntityType>
+  <EntityType Name="STUDENT_TB">
+    <Key>
+      <PropertyRef Name="MSSV" />
+    </Key>
+    <Property Name="MSSV" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="STUDENTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CLASS" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="ROOM" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="STATUS" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="DATEIN" Type="DateTime" />
+    <Property Name="DATEOUT" Type="DateTime" />
+    <NavigationProperty Name="CLASS_TB" Relationship="Self.CLASS_FK" FromRole="STUDENT_TB" ToRole="CLASS_TB" />
+    <NavigationProperty Name="ROOM_TB" Relationship="Self.ROOM_FK" FromRole="STUDENT_TB" ToRole="ROOM_TB" />
+  </EntityType>
+  <Association Name="CLASS_FK">
+    <End Role="CLASS_TB" Type="Self.CLASS_TB" Multiplicity="1" />
+    <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CLASS_TB">
+        <PropertyRef Name="CLASS_ID" />
+      </Principal>
+      <Dependent Role="STUDENT_TB">
+        <PropertyRef Name="CLASS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DEPARTMENT_FK">
+    <End Role="DEPARTMENT_TB" Type="Self.DEPARTMENT_TB" Multiplicity="1" />
+    <End Role="CLASS_TB" Type="Self.CLASS_TB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENT_TB">
+        <PropertyRef Name="DEPART_ID" />
+      </Principal>
+      <Dependent Role="CLASS_TB">
+        <PropertyRef Name="DEPARTMENT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ROOM_FK">
+    <End Role="ROOM_TB" Type="Self.ROOM_TB" Multiplicity="1" />
+    <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ROOM_TB">
+        <PropertyRef Name="ROOMID" />
+      </Principal>
+      <Dependent Role="STUDENT_TB">
+        <PropertyRef Name="ROOM" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ManagerEntities5" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CLASS_TB" EntityType="Self.CLASS_TB" />
+    <EntitySet Name="DEPARTMENT_TB" EntityType="Self.DEPARTMENT_TB" />
+    <EntitySet Name="ROOM_TB" EntityType="Self.ROOM_TB" />
+    <EntitySet Name="STUDENT_TB" EntityType="Self.STUDENT_TB" />
+    <AssociationSet Name="CLASS_FK" Association="Self.CLASS_FK">
+      <End Role="CLASS_TB" EntitySet="CLASS_TB" />
+      <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+    </AssociationSet>
+    <AssociationSet Name="DEPARTMENT_FK" Association="Self.DEPARTMENT_FK">
+      <End Role="DEPARTMENT_TB" EntitySet="DEPARTMENT_TB" />
+      <End Role="CLASS_TB" EntitySet="CLASS_TB" />
+    </AssociationSet>
+    <AssociationSet Name="ROOM_FK" Association="Self.ROOM_FK">
+      <End Role="ROOM_TB" EntitySet="ROOM_TB" />
+      <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

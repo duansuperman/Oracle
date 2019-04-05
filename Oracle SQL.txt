@@ -1,0 +1,102 @@
+Bài 1: Sử dụng Select để lấy dữ liệu :
+
+	Cú pháp: select *[column|expression]
+			 from table;
+	biểu thức số học và giá trị Null trong câu lệnh select : +,-,*,/
+			select last_name, salary, salary+300
+			from employees;
+	Trong biểu thức tính toán vơi giá trị null thì kết quả sẽ là null 
+		
+	Column aliases :
+		+ Thay đổi tiều đề cột
+		+ Được sử dụng trong biểu thức tính toán
+		+ Để hiển thị khoảng trắng , các ký tự đặc biệt thì phải dùng dấu nháy đôi
+	vd: select last_name as name , commission_pct com , salary *12 "AnnualSalary"
+		form employees ;
+	A concatenation operator:
+		vd : select last_name||jod_id as "employees"
+		from employees;
+	Literal character string:
+		vd : select last_name||' is a '||jod_id as "employees"
+		from employees;
+	Alternative quote(q) operator:
+		vd: vd : select last_name||q'[Department's manager id :]'||Manager_id as "Department and Manager"
+		from employees;
+	Duplicate Rows:
+		vd : select DISTINCT Department_id
+			from employees;
+	Displaying the table structure:
+		desc employees;
+Bài 2: Lọc và sắp xếp dữ liệu với where và order by :
+	Cú pháp: select *[column|expression]
+			 from table
+			 where conditions;
+	vd1:
+	select employee_id, last_name
+	from employees
+	where Department_id = 90;
+	
+	vd2:
+	select employee_id, last_name
+	from employees
+	where Last_name = 'Whole';
+	
+	note: Chuỗi trong oracle phân biệt hoa thường .Còn SQL thì không
+		kiểu date trong Oracle : DD-MON-RR (27-FEB-96)
+	
+	Use operator :
+	+ between :
+		select employee_id, last_name
+		from employees
+		where Salary between 2500 and 3500;
+	
+	+ In :
+		select employee_id, last_name
+		from employees
+		where Department_id in(100,101,201);
+	+ Like:
+		select employee_id, last_name
+		from employees
+		where Last_name = 'W%';
+		
+		select employee_id, last_name
+		from employees
+		where Last_name = '_o%';
+		
+		sử dụng có ký tự đặc biệt (% or /) :
+		select employee_id, last_name
+		from employees
+		where coll = 'add 50\%%' escape '\';
+	
+	+ Null :
+		select employee_id, last_name
+		from employees
+		where Department_id is null;
+		
+	+And :
+		select employee_id, last_name
+		from employees
+		where Salary = 3500 and jod_id like '%MAN%';
+	+ Or :
+		select employee_id, last_name
+		from employees
+		where Salary = 3500 or jod_id like '%MAN%';
+	+ Not:
+		select employee_id, last_name
+		from employees
+		where Department_id not in(100,101,201);
+		
+	+ Order by :(có thể để cuối cùng)
+		select employee_id, last_name
+		from employees
+		order by hire_date;
+		
+		select employee_id, last_name, salary*12 annual
+		from employees
+		order by annual;
+		
+		Có thể or by theo số thứ tự của column khi select :
+		select employee_id, last_name, hire_date
+		from employees
+		order by 3;
+		

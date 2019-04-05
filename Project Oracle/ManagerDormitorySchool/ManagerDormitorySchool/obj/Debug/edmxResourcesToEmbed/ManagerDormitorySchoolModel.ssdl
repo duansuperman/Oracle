@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="CLASS_TB">
+    <Key>
+      <PropertyRef Name="CLASS_ID" />
+    </Key>
+    <Property Name="CLASS_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="CLASSNAME" Type="varchar2" MaxLength="50" Nullable="false" />
+    <Property Name="DEPARTMENT" Type="number" Precision="38" Scale="0" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEPARTMENT_TB">
+    <Key>
+      <PropertyRef Name="DEPART_ID" />
+    </Key>
+    <Property Name="DEPART_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="DEPARTNAME" Type="varchar2" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ROOM_TB">
+    <Key>
+      <PropertyRef Name="ROOMID" />
+    </Key>
+    <Property Name="ROOMID" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="ROOMNAME" Type="varchar2" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="STUDENT_TB">
+    <Key>
+      <PropertyRef Name="MSSV" />
+    </Key>
+    <Property Name="MSSV" Type="varchar2" MaxLength="20" Nullable="false" />
+    <Property Name="STUDENTNAME" Type="varchar2" MaxLength="50" Nullable="false" />
+    <Property Name="CLASS" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="ROOM" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="STATUS" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="DATEIN" Type="date" />
+    <Property Name="DATEOUT" Type="date" />
+  </EntityType>
+  <Association Name="CLASS_FK">
+    <End Role="CLASS_TB" Type="Self.CLASS_TB" Multiplicity="1" />
+    <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CLASS_TB">
+        <PropertyRef Name="CLASS_ID" />
+      </Principal>
+      <Dependent Role="STUDENT_TB">
+        <PropertyRef Name="CLASS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DEPARTMENT_FK">
+    <End Role="DEPARTMENT_TB" Type="Self.DEPARTMENT_TB" Multiplicity="1" />
+    <End Role="CLASS_TB" Type="Self.CLASS_TB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENT_TB">
+        <PropertyRef Name="DEPART_ID" />
+      </Principal>
+      <Dependent Role="CLASS_TB">
+        <PropertyRef Name="DEPARTMENT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ROOM_FK">
+    <End Role="ROOM_TB" Type="Self.ROOM_TB" Multiplicity="1" />
+    <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ROOM_TB">
+        <PropertyRef Name="ROOMID" />
+      </Principal>
+      <Dependent Role="STUDENT_TB">
+        <PropertyRef Name="ROOM" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="CLASS_TB" EntityType="Self.CLASS_TB" Schema="HR" store:Type="Tables" />
+    <EntitySet Name="DEPARTMENT_TB" EntityType="Self.DEPARTMENT_TB" Schema="HR" store:Type="Tables" />
+    <EntitySet Name="ROOM_TB" EntityType="Self.ROOM_TB" Schema="HR" store:Type="Tables" />
+    <EntitySet Name="STUDENT_TB" EntityType="Self.STUDENT_TB" Schema="HR" store:Type="Tables" />
+    <AssociationSet Name="CLASS_FK" Association="Self.CLASS_FK">
+      <End Role="CLASS_TB" EntitySet="CLASS_TB" />
+      <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+    </AssociationSet>
+    <AssociationSet Name="DEPARTMENT_FK" Association="Self.DEPARTMENT_FK">
+      <End Role="DEPARTMENT_TB" EntitySet="DEPARTMENT_TB" />
+      <End Role="CLASS_TB" EntitySet="CLASS_TB" />
+    </AssociationSet>
+    <AssociationSet Name="ROOM_FK" Association="Self.ROOM_FK">
+      <End Role="ROOM_TB" EntitySet="ROOM_TB" />
+      <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="CLASS_TB">
+    <Key>
+      <PropertyRef Name="CLASS_ID" />
+    </Key>
+    <Property Name="CLASS_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="CLASSNAME" Type="varchar2" MaxLength="50" Nullable="false" />
+    <Property Name="DEPARTMENT" Type="number" Precision="38" Scale="0" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEPARTMENT_TB">
+    <Key>
+      <PropertyRef Name="DEPART_ID" />
+    </Key>
+    <Property Name="DEPART_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="DEPARTNAME" Type="varchar2" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEVVN_QUANHUYEN">
+    <Key>
+      <PropertyRef Name="MAQH" />
+    </Key>
+    <Property Name="MAQH" Type="varchar2" MaxLength="5" Nullable="false" />
+    <Property Name="NAME" Type="varchar2" MaxLength="100" Nullable="false" />
+    <Property Name="TYPE" Type="varchar2" MaxLength="30" Nullable="false" />
+    <Property Name="MATP" Type="varchar2" MaxLength="5" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEVVN_TINHTHANHPHO">
+    <Key>
+      <PropertyRef Name="MATP" />
+    </Key>
+    <Property Name="MATP" Type="varchar2" MaxLength="5" Nullable="false" />
+    <Property Name="NAME" Type="varchar2" MaxLength="100" Nullable="false" />
+    <Property Name="TYPE" Type="varchar2" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEVVN_XAPHUONGTHITRAN">
+    <Key>
+      <PropertyRef Name="XAID" />
+    </Key>
+    <Property Name="XAID" Type="varchar2" MaxLength="5" Nullable="false" />
+    <Property Name="NAME" Type="varchar2" MaxLength="100" Nullable="false" />
+    <Property Name="TYPE" Type="varchar2" MaxLength="30" Nullable="false" />
+    <Property Name="MAQH" Type="varchar2" MaxLength="5" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ROOM_TB">
+    <Key>
+      <PropertyRef Name="ROOMID" />
+    </Key>
+    <Property Name="ROOMID" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="ROOMNAME" Type="varchar2" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="STATISTIC_TB">
+    <Key>
+      <PropertyRef Name="STA_ID" />
+    </Key>
+    <Property Name="STA_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="MONTH" Type="date" Nullable="false" />
+    <Property Name="STUDENT" Type="varchar2" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="STUDENT_TB">
+    <Key>
+      <PropertyRef Name="STUDENT_ID" />
+    </Key>
+    <Property Name="STUDENT_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+    <Property Name="STUDENTNAME" Type="varchar2" MaxLength="50" Nullable="false" />
+    <Property Name="CLASS" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="ROOM" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="STATUS" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="DATEIN" Type="date" />
+    <Property Name="DATEOUT" Type="date" />
+    <Property Name="PLACE" Type="varchar2" MaxLength="100" Nullable="false" />
+    <Property Name="PRIORITY" Type="number" Precision="38" Scale="0" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_CLASS_DEPARTMENT">
+    <End Role="DEPARTMENT_TB" Type="Self.DEPARTMENT_TB" Multiplicity="1" />
+    <End Role="CLASS_TB" Type="Self.CLASS_TB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENT_TB">
+        <PropertyRef Name="DEPART_ID" />
+      </Principal>
+      <Dependent Role="CLASS_TB">
+        <PropertyRef Name="DEPARTMENT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STATISTIC_STUDENT">
+    <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="1" />
+    <End Role="STATISTIC_TB" Type="Self.STATISTIC_TB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="STUDENT_TB">
+        <PropertyRef Name="STUDENT_ID" />
+      </Principal>
+      <Dependent Role="STATISTIC_TB">
+        <PropertyRef Name="STUDENT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENT_CLASS">
+    <End Role="CLASS_TB" Type="Self.CLASS_TB" Multiplicity="1" />
+    <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CLASS_TB">
+        <PropertyRef Name="CLASS_ID" />
+      </Principal>
+      <Dependent Role="STUDENT_TB">
+        <PropertyRef Name="CLASS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENT_ROOM">
+    <End Role="ROOM_TB" Type="Self.ROOM_TB" Multiplicity="1" />
+    <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ROOM_TB">
+        <PropertyRef Name="ROOMID" />
+      </Principal>
+      <Dependent Role="STUDENT_TB">
+        <PropertyRef Name="ROOM" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="CLASS_TB" EntityType="Self.CLASS_TB" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+    <EntitySet Name="DEPARTMENT_TB" EntityType="Self.DEPARTMENT_TB" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+    <EntitySet Name="DEVVN_QUANHUYEN" EntityType="Self.DEVVN_QUANHUYEN" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+    <EntitySet Name="DEVVN_TINHTHANHPHO" EntityType="Self.DEVVN_TINHTHANHPHO" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+    <EntitySet Name="DEVVN_XAPHUONGTHITRAN" EntityType="Self.DEVVN_XAPHUONGTHITRAN" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+    <EntitySet Name="ROOM_TB" EntityType="Self.ROOM_TB" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+    <EntitySet Name="STATISTIC_TB" EntityType="Self.STATISTIC_TB" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+    <EntitySet Name="STUDENT_TB" EntityType="Self.STUDENT_TB" Schema="MANAGERDORMITORYSCHOOL" store:Type="Tables" />
+    <AssociationSet Name="FK_CLASS_DEPARTMENT" Association="Self.FK_CLASS_DEPARTMENT">
+      <End Role="DEPARTMENT_TB" EntitySet="DEPARTMENT_TB" />
+      <End Role="CLASS_TB" EntitySet="CLASS_TB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STATISTIC_STUDENT" Association="Self.FK_STATISTIC_STUDENT">
+      <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+      <End Role="STATISTIC_TB" EntitySet="STATISTIC_TB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENT_CLASS" Association="Self.FK_STUDENT_CLASS">
+      <End Role="CLASS_TB" EntitySet="CLASS_TB" />
+      <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENT_ROOM" Association="Self.FK_STUDENT_ROOM">
+      <End Role="ROOM_TB" EntitySet="ROOM_TB" />
+      <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

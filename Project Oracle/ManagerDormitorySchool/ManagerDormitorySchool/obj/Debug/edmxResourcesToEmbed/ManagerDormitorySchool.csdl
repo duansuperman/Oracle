@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="CLASS_TB">
+    <Key>
+      <PropertyRef Name="CLASS_ID" />
+    </Key>
+    <Property Name="CLASS_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="CLASSNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DEPARTMENT" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <NavigationProperty Name="DEPARTMENT_TB" Relationship="Self.FK_CLASS_DEPARTMENT" FromRole="CLASS_TB" ToRole="DEPARTMENT_TB" />
+    <NavigationProperty Name="STUDENT_TB" Relationship="Self.FK_STUDENT_CLASS" FromRole="CLASS_TB" ToRole="STUDENT_TB" />
+  </EntityType>
+  <EntityType Name="DEPARTMENT_TB">
+    <Key>
+      <PropertyRef Name="DEPART_ID" />
+    </Key>
+    <Property Name="DEPART_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="DEPARTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="CLASS_TB" Relationship="Self.FK_CLASS_DEPARTMENT" FromRole="DEPARTMENT_TB" ToRole="CLASS_TB" />
+  </EntityType>
+  <EntityType Name="DEVVN_QUANHUYEN">
+    <Key>
+      <PropertyRef Name="MAQH" />
+    </Key>
+    <Property Name="MAQH" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TYPE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="MATP" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEVVN_TINHTHANHPHO">
+    <Key>
+      <PropertyRef Name="MATP" />
+    </Key>
+    <Property Name="MATP" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TYPE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEVVN_XAPHUONGTHITRAN">
+    <Key>
+      <PropertyRef Name="XAID" />
+    </Key>
+    <Property Name="XAID" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TYPE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="MAQH" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ROOM_TB">
+    <Key>
+      <PropertyRef Name="ROOMID" />
+    </Key>
+    <Property Name="ROOMID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="ROOMNAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="STUDENT_TB" Relationship="Self.FK_STUDENT_ROOM" FromRole="ROOM_TB" ToRole="STUDENT_TB" />
+  </EntityType>
+  <EntityType Name="STATISTIC_TB">
+    <Key>
+      <PropertyRef Name="STA_ID" />
+    </Key>
+    <Property Name="STA_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="MONTH" Type="DateTime" Nullable="false" />
+    <Property Name="STUDENT" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="STUDENT_TB" Relationship="Self.FK_STATISTIC_STUDENT" FromRole="STATISTIC_TB" ToRole="STUDENT_TB" />
+  </EntityType>
+  <EntityType Name="STUDENT_TB">
+    <Key>
+      <PropertyRef Name="STUDENT_ID" />
+    </Key>
+    <Property Name="STUDENT_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="STUDENTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CLASS" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="ROOM" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="STATUS" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="DATEIN" Type="DateTime" />
+    <Property Name="DATEOUT" Type="DateTime" />
+    <Property Name="PLACE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PRIORITY" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <NavigationProperty Name="CLASS_TB" Relationship="Self.FK_STUDENT_CLASS" FromRole="STUDENT_TB" ToRole="CLASS_TB" />
+    <NavigationProperty Name="ROOM_TB" Relationship="Self.FK_STUDENT_ROOM" FromRole="STUDENT_TB" ToRole="ROOM_TB" />
+    <NavigationProperty Name="STATISTIC_TB" Relationship="Self.FK_STATISTIC_STUDENT" FromRole="STUDENT_TB" ToRole="STATISTIC_TB" />
+  </EntityType>
+  <Association Name="FK_CLASS_DEPARTMENT">
+    <End Role="DEPARTMENT_TB" Type="Self.DEPARTMENT_TB" Multiplicity="1" />
+    <End Role="CLASS_TB" Type="Self.CLASS_TB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENT_TB">
+        <PropertyRef Name="DEPART_ID" />
+      </Principal>
+      <Dependent Role="CLASS_TB">
+        <PropertyRef Name="DEPARTMENT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENT_CLASS">
+    <End Role="CLASS_TB" Type="Self.CLASS_TB" Multiplicity="1" />
+    <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CLASS_TB">
+        <PropertyRef Name="CLASS_ID" />
+      </Principal>
+      <Dependent Role="STUDENT_TB">
+        <PropertyRef Name="CLASS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STUDENT_ROOM">
+    <End Role="ROOM_TB" Type="Self.ROOM_TB" Multiplicity="1" />
+    <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ROOM_TB">
+        <PropertyRef Name="ROOMID" />
+      </Principal>
+      <Dependent Role="STUDENT_TB">
+        <PropertyRef Name="ROOM" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STATISTIC_STUDENT">
+    <End Role="STUDENT_TB" Type="Self.STUDENT_TB" Multiplicity="1" />
+    <End Role="STATISTIC_TB" Type="Self.STATISTIC_TB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="STUDENT_TB">
+        <PropertyRef Name="STUDENT_ID" />
+      </Principal>
+      <Dependent Role="STATISTIC_TB">
+        <PropertyRef Name="STUDENT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ManagerEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CLASS_TB" EntityType="Self.CLASS_TB" />
+    <EntitySet Name="DEPARTMENT_TB" EntityType="Self.DEPARTMENT_TB" />
+    <EntitySet Name="DEVVN_QUANHUYEN" EntityType="Self.DEVVN_QUANHUYEN" />
+    <EntitySet Name="DEVVN_TINHTHANHPHO" EntityType="Self.DEVVN_TINHTHANHPHO" />
+    <EntitySet Name="DEVVN_XAPHUONGTHITRAN" EntityType="Self.DEVVN_XAPHUONGTHITRAN" />
+    <EntitySet Name="ROOM_TB" EntityType="Self.ROOM_TB" />
+    <EntitySet Name="STATISTIC_TB" EntityType="Self.STATISTIC_TB" />
+    <EntitySet Name="STUDENT_TB" EntityType="Self.STUDENT_TB" />
+    <AssociationSet Name="FK_CLASS_DEPARTMENT" Association="Self.FK_CLASS_DEPARTMENT">
+      <End Role="DEPARTMENT_TB" EntitySet="DEPARTMENT_TB" />
+      <End Role="CLASS_TB" EntitySet="CLASS_TB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENT_CLASS" Association="Self.FK_STUDENT_CLASS">
+      <End Role="CLASS_TB" EntitySet="CLASS_TB" />
+      <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STUDENT_ROOM" Association="Self.FK_STUDENT_ROOM">
+      <End Role="ROOM_TB" EntitySet="ROOM_TB" />
+      <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STATISTIC_STUDENT" Association="Self.FK_STATISTIC_STUDENT">
+      <End Role="STUDENT_TB" EntitySet="STUDENT_TB" />
+      <End Role="STATISTIC_TB" EntitySet="STATISTIC_TB" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
